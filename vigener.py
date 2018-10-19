@@ -1,12 +1,12 @@
-def encrypt_vigenere(plaintext, keyword):
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
-    >>> encrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> encrypt_vigenere("python", "a")
-    'python'
-    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
-    'LXFOPVEFRNHR'
+    This function encrypts a message using a Vigenere cipher.
+
+    :param plaintext: word that must be encrypted
+    :param keyword: key which will be used for encryption
+    :return: encrypted word
     """
+
     ciphertext = ''
     for index, symb in enumerate(plaintext):
         if 'a' <= symb <= 'z' or 'A' <= symb <= 'Z':
@@ -26,14 +26,13 @@ def encrypt_vigenere(plaintext, keyword):
     return ciphertext
 
 
-def decrypt_vigenere(ciphertext, keyword):
+def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
-    >>> decrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> decrypt_vigenere("python", "a")
-    'python'
-    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
-    'ATTACKATDAWN'
+    This function decrypts an encrypted message using a Vigenere cipher.
+
+    :param ciphertext: word that must be decrypted
+    :param keyword:  key which will be used for decryption
+    :return: decrypted word
     """
     plaintext = ""
     for num, symb in enumerate(ciphertext):
@@ -49,7 +48,3 @@ def decrypt_vigenere(ciphertext, keyword):
         else:
             plaintext += symb
     return plaintext
-
-
-print(encrypt_vigenere("ATTACKATDAWN", "LEMON"))
-print(decrypt_vigenere('LXFOPVEFRNHR', 'LEMON'))

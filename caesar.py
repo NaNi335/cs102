@@ -1,15 +1,11 @@
-def encrypt_caesar(plaintext):
+def encrypt_caesar(plaintext: str) -> str:
     """
-    Encrypts plaintext using a Caesar cipher.
-    >>> encrypt_caesar("PYTHON")
-    'SBWKRQ'
-    >>> encrypt_caesar("python")
-    'sbwkrq'
-    >>> encrypt_caesar("Python3.6")
-    'Sbwkrq3.6'
-    >>> encrypt_caesar("")
-    ''
+    This function encrypts a message using a Caesar cipher.
+
+    :param plaintext: word that must be encrypted
+    :return: encrypted word
     """
+
     ciphertext = ""
     for symb in plaintext:
         if 'A' <= symb <= 'Z' or 'a' <= symb <= 'z':
@@ -22,18 +18,14 @@ def encrypt_caesar(plaintext):
     return ciphertext
 
 
-def decrypt_caesar(ciphertext):
+def decrypt_caesar(ciphertext: str) -> str:
     """
-    Decrypts a ciphertext using a Caesar cipher.
-    >>> decrypt_caesar("SBWKRQ")
-    'PYTHON'
-    >>> decrypt_caesar("sbwkrq")
-    'python'
-    >>> decrypt_caesar("Sbwkrq3.6")
-    'Python3.6'
-    >>> decrypt_caesar("")
-    ''
+    This function decrypts an encrypted message using a Caesar cipher.
+
+    :param ciphertext: word that must be decrypted
+    :return: decrypted word
     """
+
     plaintext = ""
     for symb in ciphertext:
         if 'A' <= symb <= 'Z' or 'a' <= symb <= 'z':
@@ -45,7 +37,3 @@ def decrypt_caesar(ciphertext):
             plaintext += symb
 
     return plaintext
-
-
-print(encrypt_caesar('Python3.7'))
-print(decrypt_caesar('Sbwkrq3.7'))
