@@ -12,6 +12,7 @@ def is_prime(n: int) -> bool:
     for i in range(2, n):
         if n % i == 0:
             s = i
+            break
     if s == 1:
         return True
     else:
