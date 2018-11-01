@@ -8,7 +8,7 @@ Projects for ITMO University
 E-mail: nasti335@mail.ru
 
 
-Slack: member ID = UD4UJAXAN  Profile name = Nani335
+Slack: profile name = Nani335
 
 
 Group: K3142
