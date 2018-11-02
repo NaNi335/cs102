@@ -94,10 +94,7 @@ def find_possible_values(grid, pos):
     >>> values == {'2', '5', '9'}
     True
     """
-    values = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
-    values.difference_update(set(get_row(grid, pos)))
-    values.difference_update(set(get_col(grid, pos)))
-    values.difference_update(set(get_block(grid, pos)))
+    values = set('123456789') - set(get_row(grid, pos)) - set(get_col(grid, pos)) - set(get_block(grid, pos))
     return values
 
 
