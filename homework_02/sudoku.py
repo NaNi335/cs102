@@ -84,6 +84,7 @@ def find_empty_positions(grid: list) -> Optional[tuple]:
         for j in range(len(grid[i])):
             if grid[i][j] == '.':
                 return (i, j)
+    return None
 
 
 def find_possible_values(grid: list, pos: tuple) -> set:
@@ -171,6 +172,8 @@ def generate_sudoku(N: int) -> Optional[list]:
     """
     s = [['.'] * 9 for _ in range(9)]
     grid = solve(s)
+    if grid is None:
+        return None
     N = 81 - min(81, max(0, N))
     while N:
         row = random.randint(0, 8)
