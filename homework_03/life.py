@@ -100,6 +100,5 @@ class GameOfLife:
 
 
 if __name__ == '__main__':
-    print(2)
     game = GameOfLife(320, 240, 20)
     game.run()
