@@ -47,11 +47,9 @@ class GameOfLife:
                 if event.type == QUIT:
                     running = False
             self.draw_grid()
-
-            # Отрисовка списка клеток
+            self.draw_cell_list(self.clist)
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
-
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -76,7 +74,17 @@ class GameOfLife:
         """ Отображение списка клеток
         :param rects: Список клеток для отрисовки, представленный в виде матрицы
         """
-        pass
+
+        for i in range(self.cell_height):
+            for j in range(self.cell_width):
+                x = j * self.cell_size + 1
+                y = i * self.cell_size + 1
+                a = self.cell_size - 1
+                b = self.cell_size - 1
+                if clist[i][j]:
+                    pygame.draw.rect(self.screen, pygame.Color('green'), (x, y, a, b))
+                else:
+                    pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, a, b))
 
     def get_neighbours(self, cell):
         """ Вернуть список соседей для указанной ячейки
