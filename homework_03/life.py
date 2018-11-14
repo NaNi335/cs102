@@ -68,6 +68,12 @@ class GameOfLife:
                     small_list.append(random.randint(0, 1))
                 self.clist.append(small_list)
                 small_list = []
+        else:
+            for i in range(self.cell_height):
+                for j in range(self.cell_width):
+                    small_list.append(0)
+                self.clist.append(small_list)
+                small_list = []
         return self.clist
 
     def draw_cell_list(self, clist):
