@@ -57,6 +57,23 @@ class GameOfLife:
             clock.tick(self.speed)
         pygame.quit()
 
+    def cell_list(self, randomize=True) ->list:
+        self.clist = CellList(self.cell_width, self.cell_height, randomize)
+        self.grid = self.clist.grid
+        return self.grid
+
+    def draw_cell_list(self):
+        for i in range(self.cell_height):
+            for j in range(self.cell_width):
+                x = j * self.cell_size + 1  # отрисовка черной линии по бокам
+                y = i * self.cell_size + 1
+                a = self.cell_size - 1
+                b = self.cell_size - 1
+                if self.grid[i][j].is_alive():
+                    pygame.draw.rect(self.screen, pygame.Color('green'), (x, y, a, b))
+                else:
+                    pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, a, b))
+
 
 class Cell:
 
@@ -149,3 +166,8 @@ class CellList:
                     str += '0'
             str += '\n'
         return str
+
+
+if __name__ == '__main__':
+    game = GameOfLife(320, 240, 40)
+    game.run()

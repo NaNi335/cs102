@@ -73,7 +73,7 @@ class GameOfLife:
             self.clist = [[0] * self.cell_width for _ in range(self.cell_height)]
         return self.clist
 
-    def draw_cell_list(self, clist:list):
+    def draw_cell_list(self, clist: list):
         """ Отображение списка клеток
         :param clist: Список клеток для отрисовки, представленный в виде матрицы
         """
