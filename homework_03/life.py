@@ -55,7 +55,7 @@ class GameOfLife:
             clock.tick(self.speed)
         pygame.quit()
 
-    def cell_list(self, randomize=True) -> list:
+    def cell_list(self, randomize=True) ->:
         """ Создание списка клеток.
         :param randomize: Если True, то создается список клеток, где
         каждая клетка равновероятно может быть живой (1) или мертвой (0).
