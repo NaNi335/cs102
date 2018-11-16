@@ -117,13 +117,35 @@ class CellList:
 
     @classmethod
     def from_file(cls, filename):
-        pass
+        grid = []
+        with open (filename) as file:
+            for i, x in enumerate(file):
+                grid.append([Cell(i, j, int(z)) for j, z in enumerate(x) if z in '01'])
+        clist = cls(len(grid), len(grid[0]), False)
+        clist.grid = grid
+        return clist
 
     def __iter__(self):
-        pass
+        self.i, self.j = 0, 0
+        return self
 
     def __next__(self):
-        pass
+        if self.i == self.nrows:
+            raise StopIteration
+        cell = self.grid[self.i][self.j]
+        self.j +=1
+        if self.j == self.ncols:
+            self.i += 1
+            self.j = 0
+        return cell
 
     def __str__(self):
-        pass
+        str = ''
+        for i in range(self.nrows):
+            for j in range(self.ncols):
+                if self.grid.alive:
+                    str += '1'
+                else:
+                    str += '0'
+            str += '\n'
+        return str
