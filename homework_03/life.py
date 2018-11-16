@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+import copy
 
 
 class GameOfLife:
@@ -79,8 +80,8 @@ class GameOfLife:
 
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                x = j * self.cell_size + 1  # положение с отрисовкой черной линии по бокам
-                y = i * self.cell_size + 1  # х и у - уголочки клетки
+                x = j * self.cell_size + 1  # отрисовка черной линии по бокам
+                y = i * self.cell_size + 1
                 a = self.cell_size - 1
                 b = self.cell_size - 1
                 if clist[i][j]:
@@ -107,8 +108,17 @@ class GameOfLife:
         :param cell_list: Игровое поле, представленное в виде матрицы
         :return: Обновленное игровое поле
         """
-        new_clist = []
-        # PUT YOUR CODE HERE
+        deepcopy = copy.deepcopy(self.clist)
+        for i in range(self.cell_height):
+            for j in range(self.cell_width):
+                neighbours = sum(self.get_neighbours((i, j)))
+                if cell_list[i][j]:
+                    if not 1 < neighbours < 4:
+                        deepcopy[i][j] = 0
+                else:
+                    if neighbours == 3:
+                        deepcopy[i][j] = 1
+        self.clist = deepcopy
         return self.clist
 
 
