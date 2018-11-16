@@ -38,8 +38,7 @@ class GameOfLife:
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
 
-        # Создание списка клеток
-        # PUT YOUR CODE HERE
+        self.clist = game.cell_list()
 
         running = True
         while running:
@@ -48,8 +47,7 @@ class GameOfLife:
                     running = False
             self.draw_grid()
             self.draw_cell_list(self.clist)
-            # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
+            self.clist = self.update_cell_list(self.clist)
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -69,22 +67,18 @@ class GameOfLife:
                 self.clist.append(small_list)
                 small_list = []
         else:
-            for i in range(self.cell_height):
-                for j in range(self.cell_width):
-                    small_list.append(0)
-                self.clist.append(small_list)
-                small_list = []
+            self.clist = [[0] * self.cell_width for _ in range(self.cell_height)]
         return self.clist
 
     def draw_cell_list(self, clist):
         """ Отображение списка клеток
-        :param rects: Список клеток для отрисовки, представленный в виде матрицы
+        :param clist: Список клеток для отрисовки, представленный в виде матрицы
         """
 
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                x = j * self.cell_size + 1
-                y = i * self.cell_size + 1
+                x = j * self.cell_size + 1  # положение с отрисовкой черной линии по бокам
+                y = i * self.cell_size + 1  # х и у - уголочки клетки
                 a = self.cell_size - 1
                 b = self.cell_size - 1
                 if clist[i][j]:
@@ -98,7 +92,7 @@ class GameOfLife:
         :return: Одномерный список ячеек, смежных к ячейке cell
         """
         neighbours = []
-        # PUT YOUR CODE HERE
+        
         return neighbours
 
     def update_cell_list(self, cell_list):
