@@ -45,9 +45,11 @@ class GameOfLife:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
+
             self.draw_grid()
             self.draw_cell_list(self.clist)
             self.clist = self.update_cell_list(self.clist)
+
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -92,7 +94,14 @@ class GameOfLife:
         :return: Одномерный список ячеек, смежных к ячейке cell
         """
         neighbours = []
-        
+        row, col = cell
+        a = self.cell_size - 1
+        b = self.cell_size - 1
+        for i in range(row - 1, row + 2):
+            for j in range(col - 1, col + 2):
+                if not (0 <= i <= a and 0 <= j <= b) or (i == row and j == col):
+                    continue
+                neighbours.append(self.clist[i][j])
         return neighbours
 
     def update_cell_list(self, cell_list):
