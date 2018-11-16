@@ -93,15 +93,11 @@ class GameOfLife:
         :param cell: Позиция ячейки в сетке, задается кортежем вида (row, col)
         :return: Одномерный список ячеек, смежных к ячейке cell
         """
-        neighbours = []
         row, col = cell
-        a = self.cell_size - 1
-        b = self.cell_size - 1
-        for i in range(row - 1, row + 2):
-            for j in range(col - 1, col + 2):
-                if not (0 <= i <= a and 0 <= j <= b) or (i == row and j == col):
-                    continue
-                neighbours.append(self.clist[i][j])
+        a = self.cell_height - 1
+        b = self.cell_width - 1
+        neighbours = [self.clist[i][j] for i in range(row - 1, row + 2) for j in range(col - 1, col + 2)
+                      if (0 <= i <= a) and (0 <= j <= b) and (i != row or j != col)]
         return neighbours
 
     def update_cell_list(self, cell_list):
