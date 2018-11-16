@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
-import copy
+from copy import deepcopy
 
 
 class GameOfLife:
@@ -39,8 +39,7 @@ class GameOfLife:
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
 
-        # Создание списка клеток
-        # PUT YOUR CODE HERE
+        cell_list = CellList(self.cell_height, self.cell_width, randomize=True)
 
         running = True
         while running:
@@ -51,8 +50,18 @@ class GameOfLife:
 
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
-
+            x = 0
+            y = 0
+            for cell in cell_list:
+                if cell.is_alive():
+                    pygame.draw.rect(self.screen, pygame.Color('green'), [x, y, self.cell_size, self.cell_size])
+                else:
+                    pygame.draw.rect(self.screen, pygame.Color('white'), [x, y, self.cell_size, self.cell_size])
+                x += self.cell_size
+                if x >= self.width:
+                    y += self.cell_size
+                    x = 0
+            cell_list.update()
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -77,7 +86,7 @@ class GameOfLife:
 
 class Cell:
 
-    def __init__(self, row, col, state=False):
+    def __init__(self, row: int, col: int, state=0):
         self.state = state
         self.row = row
         self.col = col
@@ -91,13 +100,6 @@ class CellList:
     def __init__(self, nrows, ncols, randomize=False):
         self.nrows = nrows
         self.ncols = ncols
-
-        """
-        if randomize:
-            self.grid = [[Cell(i, j, random.randint(0, 1)) for j in range(ncols)] for i in range(nrows)]
-        else:
-            self.grid = [[Cell(i, j, 0) for j in range(ncols)] for i in range(nrows)]
-        """
 
         self.grid = []
         small_list = []
@@ -119,23 +121,23 @@ class CellList:
         return neighbours
 
     def update(self):
-        deepcopy = copy.deepcopy(self.grid)
+        new_grid = deepcopy(self.grid)
         for cell in self:
             spisok = self.get_neighbours(cell)
-            neighbours = sum(unit.is_alive() for unit in spisok)
+            neighbours = sum(s.is_alive() for s in spisok)
             if cell.is_alive():
                 if not 1 < neighbours < 4:
-                    deepcopy[cell.row][cell.col].state = 0
+                    new_grid[cell.row][cell.col].alive = 0
             else:
                 if neighbours == 3:
-                    deepcopy[cell.row][cell.col].state = 1
-        self.grid = deepcopy
+                    new_grid[cell.row][cell.col].alive = 1
+        self.grid = new_grid
         return self
 
     @classmethod
     def from_file(cls, filename):
         grid = []
-        with open (filename) as file:
+        with open(filename) as file:
             for i, x in enumerate(file):
                 grid.append([Cell(i, j, int(z)) for j, z in enumerate(x) if z in '01'])
         clist = cls(len(grid), len(grid[0]), False)
@@ -150,7 +152,7 @@ class CellList:
         if self.i == self.nrows:
             raise StopIteration
         cell = self.grid[self.i][self.j]
-        self.j +=1
+        self.j += 1
         if self.j == self.ncols:
             self.i += 1
             self.j = 0
@@ -160,7 +162,7 @@ class CellList:
         str = ''
         for i in range(self.nrows):
             for j in range(self.ncols):
-                if self.grid.alive:
+                if self.grid[i][j].alive:
                     str += '1'
                 else:
                     str += '0'
