@@ -39,7 +39,7 @@ class GameOfLife:
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
 
-        self.clist = game.cell_list()
+        self.clist = self.cell_list()
 
         running = True
         while running:
