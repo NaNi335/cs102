@@ -80,7 +80,7 @@ class GameOfLife:
 
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                x = j * self.cell_size + 1  # отрисовка черной линии по бокам
+                x = j * self.cell_size + 1   # отрисовка черной линии по бокам
                 y = i * self.cell_size + 1
                 a = self.cell_size - 1
                 b = self.cell_size - 1
@@ -108,17 +108,17 @@ class GameOfLife:
         :param cell_list: Игровое поле, представленное в виде матрицы
         :return: Обновленное игровое поле
         """
-        deepcopy = copy.deepcopy(self.clist)
+        clist_copy = copy.deepcopy(self.clist)
         for i in range(self.cell_height):
             for j in range(self.cell_width):
                 neighbours = sum(self.get_neighbours((i, j)))
                 if cell_list[i][j]:
                     if not 1 < neighbours < 4:
-                        deepcopy[i][j] = 0
+                        clist_copy[i][j] = 0
                 else:
                     if neighbours == 3:
-                        deepcopy[i][j] = 1
-        self.clist = deepcopy
+                        clist_copy[i][j] = 1
+        self.clist = clist_copy
         return self.clist
 
 

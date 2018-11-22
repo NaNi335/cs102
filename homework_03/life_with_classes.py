@@ -129,24 +129,24 @@ class CellList:
             raise StopIteration
 
     def __str__(self) -> str:
-        str1 = ''
+        string = ''
         for element in range(0, self.nrows):
             for col_number in range(0, self.ncols):
                 if self.grid[element][col_number].state:
-                    str1 += '1 '
+                    string += '1 '
                 else:
-                    str1 += '0 '
-            str1 += "\n"
-        return str1
+                    string += '0 '
+            string += "\n"
+        return string
 
     @classmethod
     def from_file(cls, filename: str) -> "CellList":
-        with open(filename, 'r') as file:
+        with open(filename, 'r') as f:
             grid = []
             row = 0
             col = 0
             ncol = 0
-            for lenght in file:
+            for lenght in f:
                 line = []
                 for element in lenght:
                     if element == '0':
