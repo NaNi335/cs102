@@ -130,9 +130,9 @@ class CellList:
 
     def __str__(self) -> str:
         string = ''
-        for element in range(0, self.nrows):
+        for row_number in range(0, self.nrows):
             for col_number in range(0, self.ncols):
-                if self.grid[element][col_number].state:
+                if self.grid[row_number][col_number].state:
                     string += '1 '
                 else:
                     string += '0 '
