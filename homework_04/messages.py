@@ -1,5 +1,6 @@
 from collections import Counter
 import datetime
+from datetime import datetime
 import plotly
 import plotly.plotly as py
 import plotly.graph_objs as go
@@ -28,7 +29,11 @@ def count_dates_from_messages(messages: List[Message]) -> Tuple[Dates, Frequenci
     """ Получить список дат и их частот
     :param messages: список сообщений
     """
-    # PUT YOUR CODE HERE
+    dates = [datetime.fromtimestamp(messages[i]['date'].strftime("%Y-%m-%d")) for i in range(len(messages))]
+    dates_quantity = Counter(dates)
+    date = [time for time in dates_quantity]
+    quantity = [dates_quantity[time] for time in dates_quantity]
+    return date, quantity
 
 
 def plotly_messages_freq(dates: Dates, freq: Frequencies) -> None:
