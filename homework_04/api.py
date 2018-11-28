@@ -3,6 +3,7 @@ import time
 
 from config import VK_CONFIG
 
+
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
     :param url: адрес, на который необходимо выполнить запрос
