@@ -1,8 +1,7 @@
 import requests
 import time
 
-import config
-
+from config import VK_CONFIG
 
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
@@ -31,7 +30,18 @@ def get_friends(user_id, fields):
     assert isinstance(user_id, int), "user_id must be positive integer"
     assert isinstance(fields, str), "fields must be string"
     assert user_id > 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
+
+    query_params = {
+        'domain': VK_CONFIG['domain'],
+        'access_token': VK_CONFIG['access_token'],
+        'user_id': user_id,
+        'fields': fields,
+        'v': '5.53'
+    }
+
+    query = "{}/friends.get".format(VK_CONFIG['domain'])
+    response = get(query, params=query_params)
+    return response.json()
 
 
 def messages_get_history(user_id, offset=0, count=20):
@@ -45,4 +55,24 @@ def messages_get_history(user_id, offset=0, count=20):
     assert isinstance(offset, int), "offset must be positive integer"
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
+    max_count = 200
+
+    query_params = {
+        'domain': VK_CONFIG['domain'],
+        'access_token': VK_CONFIG['access_token'],
+        'user_id': user_id,
+        'offset': offset,
+        'count': min(count, max_count),
+        'v': '5.53'
+    }
+
+    message_history = []
+    while count > 0:
+        query = "{}/messages.getHistory".format(VK_CONFIG['domain'])
+        response = get(query, params=query_params)
+        count -= min(count, max_count)
+        query_params['offset'] += 200
+        query_params['count'] = min(count, max_count)
+        message_history.extend(response.json()['response']['items'])
+        time.sleep()  # count needed time
+        return message_history
