@@ -75,5 +75,5 @@ def messages_get_history(user_id, offset=0, count=20):
         query_params['offset'] += 200
         query_params['count'] = min(count, max_count)
         message_history.extend(response.json()['response']['items'])
-        time.sleep()  # count needed time
+        time.sleep(0.4)
         return message_history

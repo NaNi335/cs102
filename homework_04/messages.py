@@ -16,8 +16,8 @@ Frequencies = List[int]
 
 
 plotly.tools.set_credentials_file(
-    username=config.PLOTLY_CONFIG['username'],
-    api_key=config.PLOTLY_CONFIG['api_key']
+    username=config.PLOTLY_CONFIG['nani335'],
+    api_key=config.PLOTLY_CONFIG['6ieeb82yGQkavDiWUbXT']
 )
 
 
