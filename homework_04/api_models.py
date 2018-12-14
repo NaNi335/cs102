@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from pydantic import BaseModel
 
 
@@ -18,4 +18,10 @@ class User(BaseUser):
 
 class Message(BaseModel):
     """ Модель сообщения """
-    # PUT YOUR CODE HERE
+    body: str
+    date: int
+    from_id: int
+    id: int
+    out: bool
+    read_state: bool
+    user_id: int
