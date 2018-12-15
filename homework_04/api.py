@@ -3,7 +3,7 @@ import time
 import config
 
 
-def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
+def get(url: str, params={}, timeout=1, max_retries=5, backoff_factor=0.3) -> dict:
     """ Выполнить GET-запрос
     :param url: адрес, на который необходимо выполнить запрос
     :param params: параметры запроса
@@ -13,13 +13,13 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """
     for i in range(max_retries):
         try:
-            response = requests.get(url, params=params, timeout=timeout)
-            return response
+            req = requests.get(url, params=params, timeout=timeout)
+            return req
         except requests.exceptions.RequestException:
             if i == max_retries - 1:
                 raise
-            delay = backoff_factor * (2 ** i)
-            time.sleep(delay)
+            value = backoff_factor * (2 ** i)
+            time.sleep(value)
 
 
 def get_friends(user_id: int, fields="") -> dict:
@@ -32,21 +32,24 @@ def get_friends(user_id: int, fields="") -> dict:
     assert user_id > 0, "user_id must be positive integer"
 
     query_params = {
-        'domain': config.VK_CONFIG["domain"],
-        'access_token': config.VK_CONFIG["access_token"],
+        'domain': config.VK_CONFIG['domain'],
+        'access_token': config.VK_CONFIG['access_token'],
         'user_id': user_id,
         'fields': fields,
-        'version': config.VK_CONFIG['version']
-        }
+        'v': config.VK_CONFIG['version']
+    }
 
-    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={version}".format(**query_params)
+    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={v}".format(
+        **query_params)
     response = get(query, query_params)
-    if response.json().get('error'):
-        return []
-    return response.json()['response']['items']
+    json_file = response.json()
+    fail = json_file.get('error')
+    if fail:
+        raise Exception(json_file['error']['error_msg'])
+    return json_file['response']['items']
 
 
-def messages_get_history(user_id: int, offset: int = 0, count: int = 200) -> list:
+def messages_get_history(user_id: int, offset=0, count=200) -> list:
     """ Получить историю переписки с указанным пользователем
     :param user_id: идентификатор пользователя, с которым нужно получить историю переписки
     :param offset: смещение в истории переписки
@@ -57,25 +60,29 @@ def messages_get_history(user_id: int, offset: int = 0, count: int = 200) -> lis
     assert isinstance(offset, int), "offset must be positive integer"
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
-    max_count = 200
-    messages: list = []
-
     query_params = {
-        'domain': config.VK_CONFIG["domain"],
-        'access_token': config.VK_CONFIG["access_token"],
+        'domain': config.VK_CONFIG['domain'],
+        'access_token': config.VK_CONFIG['access_token'],
         'user_id': user_id,
         'offset': offset,
-        'count': min(count, max_count),
-        'version': config.VK_CONFIG['version']
-        }
+        'messages_count': min(count, 200),
+        'v': config.VK_CONFIG['version']
+    }
 
+    messages = []
     while count > 0:
-        query = "{domain}/messages.getHistory?access_token={access_token}" \
-                "&user_id={user_id}&offset={offset}&count={count}&v={version}".format(**query_params)
-        response = requests.get(query)
-        count -= min(count, max_count)
+        query = "{domain}/messages.getHistory?" \
+            "access_token={access_token}&user_id={user_id}&offset={offset}&count={messages_count}&v={v}"\
+            .format(**query_params)
+        response = get(query)
+        if response:
+            json_file = response.json()
+            if json_file.get('error') is not None:
+                print(json_file['error']['error_msg'])
+            else:
+                messages.extend(json_file['response']["items"])
+        count -= min(count, 200)
         query_params['offset'] += 200
-        query_params['count'] = min(count, max_count)
-        messages += response.json()['response']['items']
+        query_params['messages_count'] = min(count, 200)
         time.sleep(0.4)
     return messages

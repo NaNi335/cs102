@@ -18,10 +18,10 @@ class User(BaseUser):
 
 class Message(BaseModel):
     """ Модель сообщения """
-    body: str
-    date: int
-    from_id: int
     id: int
-    out: bool
-    read_state: bool
-    user_id: int
+    body: Optional[str]
+    user_id: Optional[str]
+    date: float
+    read_state: Optional[int]
+    out: int
+    attachments: Optional[list]

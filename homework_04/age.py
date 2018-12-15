@@ -1,35 +1,41 @@
-from datetime import datetime
+import datetime
 from statistics import median
 from typing import Optional
+
 from api import get_friends
-from api_models import User
 import config
 
 
 def age_predict(user_id: int) -> Optional[float]:
     """ Наивный прогноз возраста по возрасту друзей
+
     Возраст считается как медиана среди возраста всех друзей пользователя
+
     :param user_id: идентификатор пользователя
     :return: медианный возраст пользователя
     """
     assert isinstance(user_id, int), "user_id must be positive integer"
     assert user_id > 0, "user_id must be positive integer"
-    response = get_friends(user_id, 'bdate')
 
+    dates = []
     ages = []
-    friends = [User(**friend) for friend in response]
+    data = get_friends(user_id, 'bdate')
+    for i in data:
+        if i.get('bdate'):
+            dates.append(i['bdate'])
+    y_dates = []
+    for elem in dates:
+        if len(elem) in range(8, 11):
+            y_dates.append(elem)
+    dates = y_dates
 
-    for friend in friends:
-        if friend.bdate is not None:
-            date = friend.bdate.split('.')
-            if len(date) == 3:
-                bday = int(date[0])
-                bmonth = int(date[1])
-                age = datetime.now().year - int(date[2])
-                if (datetime.now().month < bmonth) or ((datetime.now().month == bmonth) and (datetime.now().day < bday)):
-                    age -= 1
-                ages.append(age)
-    if ages:
+    for elem in dates:
+        a = list(map(int, elem.split('.')))
+        data = datetime.date(a[2], a[1], a[0])
+        age = (datetime.date.today() - data) / 365.25
+        ages.append(age.days)
+
+    if len(ages) > 0:
         return median(ages)
     else:
         return None
@@ -37,5 +43,6 @@ def age_predict(user_id: int) -> Optional[float]:
 
 if __name__ == '__main__':
     user_id = config.VK_CONFIG['user_id']
-    predicted_age = age_predict(user_id)
-    print(predicted_age)
+    print('Age:', age_predict(user_id))
+
+
