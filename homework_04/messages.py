@@ -44,6 +44,6 @@ def plotly_messages_freq(dates: List[datetime.date], freq: List[int]) -> None:
 
 
 if __name__ == '__main__':
-    friend_id = get_friends(config.VK_CONFIG['user_id'], '')[5]
-    dates, freq = count_dates_from_messages(messages_get_history(friend_id))
-    plotly_messages_freq(dates, freq)
+    messages = messages_get_history(172030641, offset=0, count=200)
+    x, y = count_dates_from_messages(messages)
+    plotly_messages_freq(x, y)
