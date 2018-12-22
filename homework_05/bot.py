@@ -42,7 +42,7 @@ def get_page(group, week=''):
 def parse_schedule(web_page, day):
     soup = BeautifulSoup(web_page, "html.parser")
 
-    days = {"monday" : "1day",
+    days = {"monday": "1day",
             "tuesday": "2day",
             "wednesday": "3day",
             "thursday": "4day",
@@ -67,6 +67,19 @@ def parse_schedule(web_page, day):
     lessons_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
 
     return times_list, locations_list, lessons_list
+
+
+@bot.message_handler(commands=['start', 'help'])
+def answer_help(message):
+    resp = """<b>Комманды бота:</b>
+    1) <b>Вывод расписания в указанный день:</b> \n /(День недели) (Неделя)* (Номер группы) 
+    <i>* необязательный параметр, "1" - нечетная неделя, "2" - четная неделя</i>
+    2) <b>Вывод ближайшего расписания:</b> \n /near (Номер группы)
+    3) <b>Вывод расписания на завтра:</b> \n /tomorrow (Номер группы)
+    4) <b>Вывод всего расписания:</b> \n /all (Неделя) (Номер группы)
+    
+    <i>Для вызова списка функций используйте /help</i>"""
+    bot.send_message(message.chat.id, resp, parse_mode='HTML')
 
 
 @bot.message_handler(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])
@@ -108,7 +121,26 @@ def get_tommorow(message):
 @bot.message_handler(commands=['all'])
 def get_all_schedule(message):
     """ Получить расписание на всю неделю для указанной группы """
-    # PUT YOUR CODE HERE
+    # just a check point
+    # logging.info('getting the whole schedule')
+    #
+    # week_list = ['/monday', '/tuesday', '/wednesday', '/thursday', '/friday', '/saturday']
+    # week_ru = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+    #
+    # _, week, group = message.text.split()
+    # web_page = get_page(group, week)
+    # resp = '<b>' + 'Расписание для {0} на неделю:'.format(group) + '</b>' + '\n\n'
+    # for day in week_list:
+    #     day_i = day[1:]
+    #     schedule = parse_schedule(web_page, day_i)
+    #     if not schedule:
+    #         continue
+    #     times_lst, locations_lst, lessons_lst = schedule
+    #     for time, location, lesson in zip(times_lst, locations_lst, lessons_lst):
+    #         resp += '<b>' + week_ru[week_list.index(day)] + '</b>' + ':\n' + \
+    #              '<b>{}</b>, {}, {}\n'.format(time, location, lesson)
+    #     resp += '\n'
+    # bot.send_message(message.chat.id, resp, parse_mode='HTML')
     pass
 
 
