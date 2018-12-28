@@ -56,11 +56,9 @@ def parse_schedule(web_page, day):
     times_list = schedule_table.find_all("td", attrs={"class": "time"})
     times_list = [time.span.text for time in times_list]
 
-    # Место проведения занятий
     locations_list = schedule_table.find_all("td", attrs={"class": "room"})
     locations_list = [room.span.text + ', ' + room.dd.text for room in locations_list]
 
-    # Название дисциплин и имена преподавателей
     lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
     lessons_list = [lesson.text.split('\n\n') for lesson in lessons_list]
     lessons_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
@@ -153,16 +151,19 @@ def get_tommorow(message):
 @bot.message_handler(commands=['all'])
 def get_all_schedule(message):
     resp = ''
-    _, group = message.text.split()
-    alldays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    _, group, week = message.text.split()
+    alldays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
     for day in alldays:
-        web_page = get_page(group)
+        if week:
+            web_page = get_page(group, week)
+        else:
+            web_page = get_page(group)
         times_lst, locations_lst, lessons_lst = parse_schedule(web_page, day)
         schedule = ''
         for time, location, lesson in zip(times_lst, locations_lst, lessons_lst):
             schedule += '<b>{}</b>, {}, {}\n'.format(time, location, lesson)
-        resp += day + "\n" + schedule
-    bot.send_message(message.chat.id, resp, parse_mode='HTML')
+        resp += '<b>{0}</b>'.format(day) + "\n" + schedule
+        bot.send_message(message.chat.id, resp, parse_mode='HTML')
 
 
 if __name__ == '__main__':
