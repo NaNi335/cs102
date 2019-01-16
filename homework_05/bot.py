@@ -12,6 +12,7 @@ bot = telebot.TeleBot(config.access_token)
 
 week_l = ['/monday', '/tuesday', '/wednesday', '/thursday', '/friday', '/saturday']
 
+
 def save_cache_page(group, page, week=''):
     file = "{0}{1}.txt".format(week, group)
     f = open(file, "w")
