@@ -12,10 +12,9 @@ def get_news(url, n_pages=1):
 
     while n_pages > 0:
         html_text = response.text
-        all_page_info = extract_next_page(html_text)
+        all_page_info = extract_news(html_text)
 
         if n_pages < len(all_page_info):
-            print(all_page_info[:n_pages])
             all_news.extend(all_page_info[:n_pages])
         else:
             all_news.extend(all_page_info)
@@ -23,7 +22,7 @@ def get_news(url, n_pages=1):
         n_pages -= len(all_page_info)
 
     return all_news
-#
+
 
 def extract_news(html_text):
     page = BeautifulSoup(html_text, 'html.parser')
