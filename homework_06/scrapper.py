@@ -6,20 +6,19 @@ from pprint import *
 def get_news(url, n_pages=1):
     all_news = []
 
-    response = requests.get(url)
-    if not response.ok:
-        assert 'WRONG URL'
-
     while n_pages > 0:
+        response = requests.get(url)
+        if not response.ok:
+            assert 'WRONG URL'
+
         html_text = response.text
         all_page_info = extract_news(html_text)
 
-        if n_pages < len(all_page_info):
-            all_news.extend(all_page_info[:n_pages])
-        else:
-            all_news.extend(all_page_info)
+        all_news.extend(all_page_info)
 
-        n_pages -= len(all_page_info)
+        n_pages -= 1
+
+        url = extract_next_page(html_text)
 
     return all_news
 
@@ -54,9 +53,9 @@ def extract_news(html_text):
 def extract_next_page(html_text):
     page = BeautifulSoup(html_text, 'html.parser')
     more_link = page.find('a', {'class': 'morelink'})
-    return more_link['href']
+    return 'https://news.ycombinator.com/' + more_link['href']
 
 
 if __name__ == '__main__':
     url = "https://news.ycombinator.com/newest"
-    pprint(get_news(url))
+    pprint(get_news(url, 3))
