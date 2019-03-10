@@ -23,15 +23,16 @@ class News(Base):
 
 Base.metadata.create_all(bind=engine)
 
-url = "https://news.ycombinator.com/newest"
-all_news = get_news(url, 3)
-s = session()
+if __name__ == '__main__':
+    url = "https://news.ycombinator.com/newest"
+    all_news = get_news(url, 100)
+    s = session()
 
-for n in all_news:
-    news = News(title=n['title'],
-                author=n['author'],
-                url=n['url'],
-                comments=n['comments'],
-                points=n['points'])
-    s.add(news)
-    s.commit()
+    for n in all_news:
+        news = News(title=n['title'],
+                    author=n['author'],
+                    url=n['url'],
+                    comments=n['comments'],
+                    points=n['points'])
+        s.add(news)
+        s.commit()

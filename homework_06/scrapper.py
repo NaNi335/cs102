@@ -1,24 +1,30 @@
 from bs4 import BeautifulSoup
 import requests
-from pprint import *
+import time
 
 
 def get_news(url, n_pages=1):
     all_news = []
 
     while n_pages > 0:
+        print(url)
         response = requests.get(url)
         if not response.ok:
             assert 'WRONG URL'
 
         html_text = response.text
+
+        if html_text == '':
+            time.sleep(60)
+            continue
+
         all_page_info = extract_news(html_text)
 
         all_news.extend(all_page_info)
 
-        n_pages -= 1
-
         url = extract_next_page(html_text)
+        n_pages -= 1
+        time.sleep(30)
 
     return all_news
 
@@ -58,4 +64,3 @@ def extract_next_page(html_text):
 
 if __name__ == '__main__':
     url = "https://news.ycombinator.com/newest"
-    pprint(get_news(url, 3))
