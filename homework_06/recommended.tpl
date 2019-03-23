@@ -22,7 +22,7 @@
                     <td>{{ row.author }}</td>
                     <td>{{ row.points }}</td>
                     <td>{{ row.comments }}</td>
-                    <td>You need to read</td>
+                    <td class="positive">You need to read</td>
                 </tr>
                 %end
 
@@ -32,7 +32,7 @@
                     <td>{{ row.author }}</td>
                     <td>{{ row.points }}</td>
                     <td>{{ row.comments }}</td>
-                    <td>Maybe you can like</td>
+                    <td class="active">You may like it</td>
                 </tr>
                 %end
 
@@ -42,7 +42,7 @@
                     <td>{{ row.author }}</td>
                     <td>{{ row.points }}</td>
                     <td>{{ row.comments }}</td>
-                    <td>You will not like it</td>
+                    <td class="negative">You will not like it</td>
                 </tr>
                 %end
             </tbody>

@@ -2,7 +2,7 @@ import math
 
 
 class NaiveBayesClassifier:
-    def __init__(self, alpha):
+    def __init__(self, alpha=1):
         self.alpha = alpha
         self.labels = []
         self.table = []
@@ -34,7 +34,6 @@ class NaiveBayesClassifier:
                         self.table[index].append(0)
                     for column in range(classes + 1, classes * 2 + 1):
                         self.table[column].append(0)
-
         sums = [sum(self.table[i + 1]) for i in range(classes)]
         dim = len(self.table[0])
 

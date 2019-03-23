@@ -8,6 +8,7 @@ from bayes_model import NaiveBayesClassifier
 from sqlalchemy import exists
 
 
+@route("/")
 @route("/news")
 def news_list():
     s = session()
